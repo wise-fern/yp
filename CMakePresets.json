@@ -12,5 +12,12 @@
                 "CMAKE_CXX_COMPILER": "clang++"
             }
         }
+    ],
+    "buildPresets": [
+        {
+            "name": "debug",
+            "displayName": "Debug",
+            "configurePreset": "debug"
+        }
     ]
 }
