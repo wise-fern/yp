@@ -1,0 +1,5 @@
+set(TESTER_NAME ${PROJECT_NAME}_tester)
+add_executable(${TESTER_NAME})
+set_target_properties(${TESTER_NAME} PROPERTIES FOLDER ${PROJECT_NAME})
+target_link_libraries(${TESTER_NAME} PRIVATE ${PROJECT_NAME})
+target_sources(${TESTER_NAME} PRIVATE "main.cpp")
