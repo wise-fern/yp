@@ -19,4 +19,7 @@ Positionable::~Positionable() = default;
 std::string Positionable::apply(std::string_view text) const {
   return std::format("\x1b[{0};{1}H{2}", _position.y, _position.x, text);
 }
+
+Positionable::Positionable(const Options &options)
+    : _position(options.position) {}
 } // namespace libyunpa
