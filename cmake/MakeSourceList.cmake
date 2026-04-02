@@ -1,0 +1,13 @@
+function(make_source_list)
+  set(options "")
+  set(oneValueArgs MODULE_LIST IMPL_LIST)
+  set(multiValueArgs MODULES IMPLS)
+  cmake_parse_arguments(PARSE_ARGV 0 arg "${options}" "${oneValueArgs}"
+                        "${multiValueArgs}")
+  foreach(appendable IN LISTS arg_MODULES)
+    list(APPEND ${arg_MODULE_LIST} "${CMAKE_CURRENT_LIST_DIR}/${appendable}")
+  endforeach()
+  foreach(appendable IN LISTS arg_IMPLS)
+    list(APPEND ${arg_IMPL_LIST} "${CMAKE_CURRENT_LIST_DIR}/${appendable}")
+  endforeach()
+endfunction()
