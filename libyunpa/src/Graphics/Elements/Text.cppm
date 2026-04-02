@@ -6,7 +6,9 @@ import :Positionable;
 namespace libyunpa {
 export class Text : public Positionable {
 public:
-  struct Options : public Positionable::Options {};
+  struct Options : public Positionable::Options {
+    std::string text;
+  };
 
 private:
   std::string _text;
