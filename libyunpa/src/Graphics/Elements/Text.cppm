@@ -14,8 +14,12 @@ private:
   std::string _text;
 
 public:
-  Text(std::string text, Point2u position = {});
   Text(const Options &options);
   ~Text() override = default;
+
+  void update() override;
+  [[nodiscard]]
+  std::string_view get_text() const;
+  void set_text(std::string_view text);
 };
 } // namespace libyunpa
