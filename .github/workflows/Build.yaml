@@ -1,0 +1,19 @@
+name: Build
+
+on:
+  push:
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  project-name: YoungPastry
+  BUILD_TYPE: Release
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - uses: pre-commit/action@v3.0.1
