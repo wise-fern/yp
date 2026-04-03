@@ -1,4 +1,7 @@
 module;
+#include <format>
+#include <string>
+#include <string_view>
 
 module libyunpa;
 import :Stylable;
@@ -60,5 +63,28 @@ bool Stylable::get_inverted() const {
 
 void Stylable::set_inverted(bool inverted) {
   _inverted = inverted;
+}
+
+std::string Stylable::apply(std::string_view text) const {
+  std::string output{text};
+  if (_bold) {
+    output = std::format("\x1b[1m{}\x1b[22m", output);
+  }
+  if (_italic) {
+    output = std::format("\x1b[3m{}\x1b[23m", output);
+  }
+  if (_underline) {
+    output = std::format("\x1b[4m{}\x1b[24m", output);
+  }
+  if (_dim) {
+    output = std::format("\x1b[2m{}\x1b[22m", output);
+  }
+  if (_blink) {
+    output = std::format("\x1b[5m{}\x1b[25m", output);
+  }
+  if (_inverted) {
+    output = std::format("\x1b[7m{}\x1b[27m", output);
+  }
+  return output;
 }
 } // namespace libyunpa

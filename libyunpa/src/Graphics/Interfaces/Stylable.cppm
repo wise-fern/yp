@@ -26,7 +26,7 @@ private:
 
 protected:
   [[nodiscard]]
-  std::string apply(std::string_view text) const final;
+  std::string apply(std::string_view text) const override;
 
 public:
   Stylable(const Options &options);
