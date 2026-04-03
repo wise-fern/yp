@@ -24,7 +24,7 @@ std::string_view Text::get_text() const {
   return _text;
 }
 
-std::string Text::apply([[gnu::unused]]std::string_view text) const {
+std::string Text::apply([[gnu::unused]] std::string_view text) const {
   return "";
 }
 } // namespace libyunpa
