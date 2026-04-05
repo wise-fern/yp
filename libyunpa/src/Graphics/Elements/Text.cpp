@@ -15,7 +15,7 @@ Text::Text(const Options &options)
 }
 
 void Text::update() {
-  output(Positionable::apply(Stylable::apply(_text)));
+  output(Positionable::apply(Colorable::apply(Stylable::apply(_text))));
   width(_text.size());
 }
 
