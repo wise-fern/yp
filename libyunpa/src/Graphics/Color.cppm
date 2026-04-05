@@ -1,5 +1,7 @@
 module;
 #include <cstdint>
+#include <string>
+#include <string_view>
 export module libyunpa:Color;
 
 namespace libyunpa {
@@ -17,5 +19,8 @@ public:
   Color(Builtin name);
   Color() = default;
   ~Color() = default;
+
+  [[nodiscard]]
+  std::string apply(std::string_view text, bool background = false) const;
 };
 } // namespace libyunpa
