@@ -2,6 +2,9 @@ module;
 
 export module libyunpa;
 
+// Graphics partitions
+export import :Color;
+
 // Graphics Elements partitions
 export import :Text;
 
