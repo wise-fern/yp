@@ -10,6 +10,7 @@ defaults:
 env:
   project-name: YoungPastry
   BUILD_TYPE: Release
+  archive-name:
 
 jobs:
   pre-commit:
@@ -17,3 +18,79 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.2
       - uses: pre-commit/action@v3.0.1
+
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            platform-name: windows.x86
+          - os: ubuntu-latest
+            platform-name: linux.x86
+            apt-packages: clang
+            CC: clang
+            CXX: clang++
+    env:
+      CMAKE_BUILD_DIR: ${{ github.workspace }}/build
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 0
+          submodules: true
+      - uses: lukka/get-cmake@v4.2.1
+      - name: Install Packages
+        if: matrix.apt-packages
+        run: sudo apt-get install -y ${{ matrix.apt-packages }}
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: Generate build files
+        if: matrix.CC
+        run: |
+          cmake -S "${{ github.workspace }}" -B "${{ env.CMAKE_BUILD_DIR }}" -G Ninja \
+            -DCMAKE_BUILD_TYPE="${{ env.BUILD_TYPE }}" \
+            -DCMAKE_C_COMPILER="${{ matrix.CC }}" \
+            -DCMAKE_CXX_COMPILER="${{ matrix.CXX }}"
+      - name: Generate build files
+        if: matrix.CC != 'clang'
+        run: |
+          cmake -S "${{ github.workspace }}" -B "${{ env.CMAKE_BUILD_DIR }}" -G Ninja\
+            -DCMAKE_BUILD_TYPE="${{ env.BUILD_TYPE }}"
+      - name: Build
+        run: |
+          cmake --build "${{ env.CMAKE_BUILD_DIR }}"
+      - name: Set archive name
+        run: |
+          ARCHIVE_NAME=${{ env.project-name }}-`git describe --tags --always`-${{ matrix.platform-name }}
+          echo "Archive name set to: $ARCHIVE_NAME"
+          echo "archive-name=$ARCHIVE_NAME" >> $GITHUB_ENV
+      - name: Package distribution
+        run: |
+          mkdir -p dist/${{ env.archive-name }}
+          cp "${{ env.CMAKE_BUILD_DIR }}/bin"/* dist/${{ env.archive-name }}
+      - name: Tar files
+        if: runner.os != 'Windows'
+        run: |
+          tar --format=ustar -czvf ",,/${{ env.archive-name }}.tar.gz" */
+      - name: Archive files
+        if: runner.os == 'Windows'
+        run: |
+          Compress-Archive dist/*/ ${{ env.archive-name }}.zip
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.platform-name }}
+          path: ${{ env.archive-name }}.*
+          retention-days: 7
+          if-no-files-found: error
+          compression-level: 0
+      - name: Upload release
+        if: github.ref_type == 'tag'
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ env.archive-name }}.*
+          file_glob: true
+          tag: ${{ github.ref }}
+          overwrite: true
