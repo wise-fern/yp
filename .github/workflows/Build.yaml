@@ -71,6 +71,7 @@ jobs:
           cp "${{ env.CMAKE_BUILD_DIR }}/bin"/* dist/${{ env.archive-name }}
       - name: Tar files
         if: runner.os != 'Windows'
+        working-directory: ./dist
         run: |
           tar --format=ustar -czvf "../${{ env.archive-name }}.tar.gz" */
       - name: Archive files
