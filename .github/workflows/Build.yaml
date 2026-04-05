@@ -76,6 +76,7 @@ jobs:
           tar --format=ustar -czvf "../${{ env.archive-name }}.tar.gz" */
       - name: Archive files
         if: runner.os == 'Windows'
+        shell: pwsh
         run: |
           Compress-Archive dist/*/ ${{ env.archive-name }}.zip
       - name: Upload artifact
