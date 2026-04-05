@@ -72,7 +72,7 @@ jobs:
       - name: Tar files
         if: runner.os != 'Windows'
         run: |
-          tar --format=ustar -czvf ",,/${{ env.archive-name }}.tar.gz" */
+          tar --format=ustar -czvf "../${{ env.archive-name }}.tar.gz" */
       - name: Archive files
         if: runner.os == 'Windows'
         run: |
