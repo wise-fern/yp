@@ -3,8 +3,10 @@ target_sources(
   PUBLIC FILE_SET
          CXX_MODULES
          FILES
+         "Colorable.cppm"
          "Drawable.cppm"
          "Positionable.cppm"
          "Printable.cppm"
          "Stylable.cppm"
-  PRIVATE "Drawable.cpp" "Positionable.cpp" "Printable.cpp" "Stylable.cpp")
+  PRIVATE "Colorable.cpp" "Drawable.cpp" "Positionable.cpp" "Printable.cpp"
+          "Stylable.cpp")

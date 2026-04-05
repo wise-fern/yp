@@ -6,7 +6,10 @@ import :Text;
 
 namespace libyunpa {
 Text::Text(const Options &options)
-    : Positionable(options), Stylable(options), _text(options.text) {
+    : Positionable(options),
+      Stylable(options),
+      Colorable(options),
+      _text(options.text) {
   update();
   height(1);
 }

@@ -6,6 +6,7 @@ export module libyunpa;
 export import :Text;
 
 // Graphics Interface partitions
+export import :Colorable;
 export import :Drawable;
 export import :Positionable;
 export import :Printable;
